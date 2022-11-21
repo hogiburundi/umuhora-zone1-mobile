@@ -15,7 +15,7 @@
           <div class="key">Qtt act.: </div>
           <div>{{ item.quantite_actuelle }}</div>
         </div>
-        <div class="group">
+        <div class="group" v-if="user_is_owner">
           <div class="key">PT: </div>
           <div>{{ money(item.prix_total) }}</div>
         </div>

@@ -410,7 +410,8 @@ app.mixin({
       return !!this.getActiveKiosk() && this.active_user.owned.includes(this.getActiveKiosk().id)
     },
     base_url(){
-      return `https://${this.$store.state.url_mode}umuhora.com`
+      // return `https://${this.$store.state.url_mode}umuhora.com`
+      return `http://127.0.0.1:8000`
     },
     url(){
       return this.base_url + this.$store.state.api;

@@ -46,7 +46,7 @@
 <div class="invoice" id="invoice">
   <center class="header">
       <img width=100 :src="getActiveKiosk().logo" style="display:block" />
-      <div v-if="active_commande">
+      <div v-if="!!active_commande">
         Facture no. {{active_commande.id}} du {{datetime(active_commande.date)}}<br>
       </div>
       <div style="text-align: left; display: inline-block;">
@@ -58,18 +58,24 @@
         {{ getActiveKiosk().nom }}<br />
         {{ getActiveKiosk().details }}
       </div>
-      <div v-if="active_commande">
-        <b>{{ active_commande.id<0?`${active_commande.client.nom} ${active_commande.client.tel}`:active_commande.client }}</b>
+      <div v-if="!!active_commande">
+        <b v-if="active_commande.id<0">
+          {{`${active_commande.client.nom} ${active_commande.client.tel}`}}
+        </b>
+        <b v-else>
+          {{active_commande.client}}
+        </b>
       </div>
   </center>
   <table style="width:100%;">
-    <tbody v-if="active_commande">
+    <tbody v-if="!!active_commande">
       <tr style="border-bottom: 1px solid #aaa;text-align: left;">
         <th>Article</th>
         <th style="">P.U.</th>
         <th>Qt.</th>
         <th style="text-align: right;">Total</th>
       </tr>
+      {{ active_commande.ventes }}
       <tr style="text-align: left;" v-for="item in active_commande.ventes">
         <td>{{ item.produit }}</td>
         <td>{{ item.prix_unitaire }} Fbu</td>
@@ -82,7 +88,7 @@
       </tr>
     </tbody>
   </table>
-  <div style="margin:10px" v-if="active_commande">
+  <div style="margin:10px" v-if="!!active_commande">
       Caissier: {{ active_commande.user }}
   </div>
   <center>
@@ -157,7 +163,10 @@ export default {
         this.active_commande = commande
         this.active_commande.ventes = ventes
         let invoice = document.getElementById("invoice")
-        CustomPlugins.launchPrint({"html":invoice.innerHTML})
+        setTimeout(() =>{
+          console.log(invoice.innerHTML)
+          CustomPlugins.launchPrint({"html":invoice.innerHTML})
+        },1000)
       }
     },
     calculateTotal(){

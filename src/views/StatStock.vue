@@ -25,7 +25,7 @@
           @perte="perdre(stock)" @deleted="remove(stock)"/>
       </ion-col>
     </ion-content>
-    <ion-footer>
+    <ion-footer v-if="user_is_owner">
       <div class="group">
         <div>Montant: </div>
         <div>BIF {{ money(montant)}}</div>
