@@ -58,7 +58,7 @@
         {{ getActiveKiosk().nom }}<br />
         {{ getActiveKiosk().details }}
       </div>
-      <div v-if="!!active_commande">
+      <div v-if="!!active_commande && !!active_commande.client">
         <b v-if="active_commande.id<0">
           {{`${active_commande.client.nom} ${active_commande.client.tel}`}}
         </b>
@@ -75,7 +75,6 @@
         <th>Qt.</th>
         <th style="text-align: right;">Total</th>
       </tr>
-      {{ active_commande.ventes }}
       <tr style="text-align: left;" v-for="item in active_commande.ventes">
         <td>{{ item.produit }}</td>
         <td>{{ item.prix_unitaire }} Fbu</td>
@@ -120,6 +119,9 @@ export default {
         this.payee += x.payee;
         this.reste += x.prix-x.payee;
       })
+    },
+    active_commande(new_val){
+      console.log(new_val)
     }
   },
   methods:{
@@ -162,8 +164,8 @@ export default {
         }
         this.active_commande = commande
         this.active_commande.ventes = ventes
-        let invoice = document.getElementById("invoice")
         setTimeout(() =>{
+          let invoice = document.getElementById("invoice")
           console.log(invoice.innerHTML)
           CustomPlugins.launchPrint({"html":invoice.innerHTML})
         },1000)
